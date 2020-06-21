@@ -1,6 +1,6 @@
-const { announce } = require('./innerModule');
+const { announce } = require("./innerModule");
 
 module.exports = function () {
-  console.log('changed 1');
+  console.log("change: 0");
   announce();
-}
+};

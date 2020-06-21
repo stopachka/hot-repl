@@ -1,3 +1,3 @@
 module.exports.announce = function () {
-  console.log('hi!');
-}
+  console.log("inner change: 0");
+};

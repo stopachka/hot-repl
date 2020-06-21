@@ -1,7 +1,7 @@
-const ORIGINAL_EXPORTS_K = Symbol('ORIGINAL_EXPORTS_K');
+const ORIGINAL_EXPORTS_K = Symbol("ORIGINAL_EXPORTS_K");
 function patchRequire() {
-  const originalRequire = require.extensions['.js'];
-  require.extensions['.js'] = function (mod, filename) {
+  const originalRequire = require.extensions[".js"];
+  require.extensions[".js"] = function (mod, filename) {
     originalRequire(mod, filename);
 
     function latestExports() {
@@ -15,21 +15,23 @@ function patchRequire() {
         return latestExports()(...args);
       },
       get(_target, prop, receiver) {
-        if (prop === ORIGINAL_EXPORTS_K) { return originalExports };
+        if (prop === ORIGINAL_EXPORTS_K) {
+          return originalExports;
+        }
         return latestExports()[prop];
       },
       ORIGINAL_EXPORTS_K: originalExports,
     });
-  }
-  console.log('🔥 require ready to go!');
+  };
+  console.log("🔥 require ready to go!");
 }
-
 
 function reload(requirePath) {
   const path = require.resolve(requirePath);
   const mod = require.cache[path];
   if (mod) {
-    mod.children && mod.children.forEach(childMod => reload(childMod.filename));
+    mod.children &&
+      mod.children.forEach((childMod) => reload(childMod.filename));
     delete require.cache[path];
   }
   require(requirePath);
@@ -38,4 +40,4 @@ function reload(requirePath) {
 module.exports = {
   patchRequire,
   reload,
-}
+};
